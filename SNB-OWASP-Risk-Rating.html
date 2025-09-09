@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Snoopbees OWASP Risk Calculator</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-[#0D1117] text-white min-h-screen py-10 px-6">
+<div class="max-w-6xl mx-auto">
+<!-- Header -->
+<div class="flex justify-between items-center mb-8 border-b border-gray-700 pb-2">
+<h1 class="text-xl md:text-2xl font-bold text-yellow-400">🐝 SNOOPBEES | OWASP Risk Rating Calculator</h1>
+<div>
+<button class="bg-gray-700 px-3 py-1 rounded hover:bg-gray-600 mr-2" onclick="setLang('en')">EN</button>
+<button class="bg-gray-700 px-3 py-1 rounded hover:bg-gray-600" onclick="setLang('th')">TH</button>
+</div>
+</div>
+<!-- Threat Agent & Vulnerability -->
+<div class="border-2 border-gray-800 bg-gray-900 rounded-xl p-3 mb-2">
+<h2 class="text-lg font-semibold text-blue-400 mb-3">LIKELIHOOD</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-2" id="tr_likelihood">
+<section class="bg-gray-800 p-4 rounded-xl">
+<h2 class="text-lg font-semibold text-blue-400 mb-3">Threat Agent</h2>
+<div class="space-y-2 text-sm">
+<div class="flex justify-between items-center">
+<label>🧠 Skill Level</label>
+<select class="bg-gray-700 text-black rounded px-2 py-1" id="skill-level">
+<option value="0">0</option>
+<option selected="" value="1">1 - No technical skills</option>
+<option value="2">2</option>
+<option value="3">3 - Some technical skills</option>
+<option value="4">4</option>
+<option value="5">5 - Advanced computer user</option>
+<option value="6">6 - Network and programming skills</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9 - Security penetration skills</option>
+</select>
+</div>
+<div class="flex justify-between items-center">
+<label>🎯 Motive</label>
+<select class="bg-gray-700 text-black rounded px-2 py-1" id="motive">
+<option value="0">0</option>
+<option selected="" value="1">1 - Low or no reward</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4 - Possible reward</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9 - High reward</option>
+</select>
+</div>
+<div class="flex justify-between items-center">
+<label>🧱 Opportunity</label>
+<select class="bg-gray-700 text-black rounded px-2 py-1" id="opportunity">
+<option selected="" value="0">0 - Full access or expensive resources required</option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4 - Special access or resources required</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7 - Some access or resources required</option>
+<option value="8">8</option>
+<option value="9">9 - No access or resources required</option>
+</select>
+</div>
+<div class="flex justify-between items-center">
+<label>👥 Size</label>
+<select class="bg-gray-700 text-black rounded px-2 py-1" id="size">
+<option value="0">0</option>
+<option value="1">1</option>
+<option selected="" value="2">2 - Developers, system administrators</option>
+<option value="3">3</option>
+<option value="4">4 - Intranet users</option>
+<option value="5">5 - Partners</option>
+<option value="6">6 - Authenticated users</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9 - Anonymous Internet users</option>
+</select>
+</div>
+</div>
+</section>
+<section class="bg-gray-800 p-4 rounded-xl">
+<h2 class="text-lg font-semibold text-blue-400 mb-3">Vulnerability</h2>
+<div class="space-y-2 text-sm">
+<div class="flex justify-between items-center">
+<label>🔍 Ease of Discovery</label>
+<select class="bg-gray-700 text-black rounded px-2 py-1" id="ease-of-discovery">
+<option value="0">0</option>
+<option selected="" value="1">1 - Practically impossible</option>
+<option value="2">2</option>
+<option value="3">3 - Difficult</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7 - Easy</option>
+<option value="8">8</option>
+<option value="9">9 - Automated tools available</option>
+</select>
+</div>
+<div class="flex justify-between items-center">
+<label>🎯 Ease of Exploit</label>
+<select class="bg-gray-700 text-black rounded px-2 py-1" id="ease-of-exploit">
+<option value="0">0</option>
+<option selected="" value="1">1 - Theoretical</option>
+<option value="2">2</option>
+<option value="3">3 - Difficult</option>
+<option value="4">4</option>
+<option value="5">5 - Easy</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9 - Automated tools available</option>
+</select>
+</div>
+<div class="flex justify-between items-center">
+<label>❓ Awareness</label>
+<select class="bg-gray-700 text-black rounded px-2 py-1" id="awareness">
+<option value="0">0</option>
+<option selected="" value="1">1 - Unknown</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4 - Hidden</option>
+<option value="5">5</option>
+<option value="6">6 - Obvious</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9 - Public knowledge</option>
+</select>
+</div>
+<div class="flex justify-between items-center">
+<label>🛡 Intrusion Detect</label>
+<select class="bg-gray-700 text-black rounded px-2 py-1" id="intrusion-detect">
+<option value="0">0</option>
+<option selected="" value="1">1 - Active detection in application</option>
+<option value="2">2</option>
+<option value="3">3 - Logged and reviewed</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8 - Logged without review</option>
+<option value="9">9 - Not logged</option>
+</select>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- Impact -->
+<div class="border-2 border-gray-800 bg-gray-900 rounded-xl p-3 mb-2">
+<h2 class="text-lg font-semibold text-blue-400 mb-3">IMPACT</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-2">
+<section class="bg-gray-800 p-4 rounded-xl">
+<h2 class="text-lg font-semibold text-green-400 mb-3">Technical Impact</h2>
+<div class="space-y-2 text-sm" id="tr_techimpact">
+<div class="flex justify-between items-center">
+<label>✅ Loss of Confidentiality</label>
+<select class="bg-gray-700 text-black rounded px-2 py-1 truncate w-full max-w-xs" id="confidentiality">
+<option value="0">0</option>
+<option value="1">1</option>
+<option selected="" value="2">2 - Minimal non-sensitive data disclosed</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6 - Minimal critical data disclosed, extensive non-sensitive data
+                                    disclosed</option>
+<option value="7">7 - Extensive critical data disclosed</option>
+<option value="8">8</option>
+<option value="9">9 - All data disclosed</option>
+</select>
+</div>
+<div class="flex justify-between items-center">
+<label>✅ Loss of Integrity</label>
+<select class="bg-gray-700 text-black rounded px-2 py-1" id="integrity">
+<option value="0">0</option>
+<option selected="" value="1">1 - Minimal slightly corrupt data</option>
+<option value="2">2</option>
+<option value="3">3 - Minimal seriously corrupt data</option>
+<option value="4">4</option>
+<option value="5">5 - Extensive slightly corrupt data</option>
+<option value="6">6</option>
+<option value="7">7 - Extensive seriously corrupt data</option>
+<option value="8">8</option>
+<option value="9">9 - All data totally corrupt</option>
+</select>
+</div>
+<div class="flex justify-between items-center">
+<label>✅ Loss of Availability</label>
+<select class="bg-gray-700 text-black rounded px-2 py-1 truncate w-full max-w-xs" id="availability">
+<option value="0">0</option>
+<option selected="" value="1">1 - Minimal secondary services interrupted</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5 - Minimal primary services interrupted, extensive secondary services interrupted</option>
+<option value="6">6</option>
+<option value="7">7 - Extensive primary services interrupted</option>
+<option value="8">8</option>
+<option value="9">9 - All services completely lost</option>
+</select>
+</div>
+<div class="flex justify-between items-center">
+<label>✅ Loss of Accountability</label>
+<select class="bg-gray-700 text-black rounded px-2 py-1" id="accountability">
+<option value="0">0</option>
+<option selected="" value="1">1 - Fully traceable</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7 - Possibly traceable</option>
+<option value="8">8</option>
+<option value="9">9 - Completely anonymous</option>
+</select>
+</div>
+</div>
+</section>
+<section class="bg-gray-800 p-4 rounded-xl">
+<h2 class="text-lg font-semibold text-green-400 mb-3">Business Impact</h2>
+<div class="space-y-2 text-sm" id="tr_busiimpact">
+<div class="flex justify-between items-center">
+<label>💰 Financial Damage</label>
+<select class="bg-gray-700 text-black rounded px-2 py-1" id="financial-damage">
+<option value="0">0</option>
+<option selected="" value="1">1 - Less than the cost to fix the vulnerability</option>
+<option value="2">2</option>
+<option value="3">3 - Minor effect on annual profit</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7 - Significant effect on annual profit</option>
+<option value="8">8</option>
+<option value="9">9 - Bankruptcy</option>
+</select>
+</div>
+<div class="flex justify-between items-center">
+<label>📉 Reputation Damage</label>
+<select class="bg-gray-700 text-black rounded px-2 py-1" id="reputation">
+<option value="0">0</option>
+<option selected="" value="1">1 - Minimal damage</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4 - Loss of major accounts</option>
+<option value="5">5 - Loss of goodwill</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9 - Brand damage</option>
+</select>
+</div>
+<div class="flex justify-between items-center">
+<label>⚖️ Non-Compliance</label>
+<select class="bg-gray-700 text-black rounded px-2 py-1" id="compliance">
+<option value="0">0</option>
+<option value="1">1</option>
+<option selected="" value="2">2 - Minor violation</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5 - Clear violation</option>
+<option value="6">6</option>
+<option value="7">7 - High profile violation</option>
+<option value="8">8</option>
+<option value="9">9</option>
+</select>
+</div>
+<div class="flex justify-between items-center">
+<label>🔐 Privacy Violation</label>
+<select class="bg-gray-700 text-black rounded px-2 py-1" id="privacy">
+<option value="0">0</option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option selected="" value="3">3 - One individual</option>
+<option value="4">4</option>
+<option value="5">5 - Hundreds of people</option>
+<option value="6">6</option>
+<option value="7">7 - Thousands of people</option>
+<option value="8">8</option>
+<option value="9">9 - Millions of people</option>
+</select>
+</div>
+</div>
+</section>
+</div>
+<!-- Adjust -->
+ <span class="grid grid-cols-3 gap-4">
+  <span class="text-lg font-semibold text-green-400 text-left">Technical Impact</span>
+  <div class="text-lg font-semibold text-blue-400 text-center">
+    Adjust Weight
+    <p class="text-green-300 font-bold text-xl">
+      <span id="adjustScore">0%</span>
+    </p>
+  </div>
+  <span class="text-lg font-semibold text-green-400 text-right">Business Impact</span>
+ </span>
+<!-- <div class="text-lg font-semibold text-blue-400 flex justify-center">
+  <label>Adjust Weigth</label>
+</div> -->
+<input type="range" min="0" max="100" step="10" value="0" class="w-full bg-transparent cursor-pointer appearance-none disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden
+  [&::-webkit-slider-thumb]:w-2.5
+  [&::-webkit-slider-thumb]:h-2.5
+  [&::-webkit-slider-thumb]:-mt-0.5
+  [&::-webkit-slider-thumb]:appearance-none
+  [&::-webkit-slider-thumb]:bg-white
+  [&::-webkit-slider-thumb]:shadow-[0_0_0_4px_rgba(37,99,235,1)]
+  [&::-webkit-slider-thumb]:rounded-full
+  [&::-webkit-slider-thumb]:transition-all
+  [&::-webkit-slider-thumb]:duration-150
+  [&::-webkit-slider-thumb]:ease-in-out
+  dark:[&::-webkit-slider-thumb]:bg-neutral-700
+
+  [&::-moz-range-thumb]:w-2.5
+  [&::-moz-range-thumb]:h-2.5
+  [&::-moz-range-thumb]:appearance-none
+  [&::-moz-range-thumb]:bg-white
+  [&::-moz-range-thumb]:border-4
+  [&::-moz-range-thumb]:border-blue-600
+  [&::-moz-range-thumb]:rounded-full
+  [&::-moz-range-thumb]:transition-all
+  [&::-moz-range-thumb]:duration-150
+  [&::-moz-range-thumb]:ease-in-out
+
+  [&::-webkit-slider-runnable-track]:w-full
+  [&::-webkit-slider-runnable-track]:h-2
+  [&::-webkit-slider-runnable-track]:bg-gray-100
+  [&::-webkit-slider-runnable-track]:rounded-full
+  dark:[&::-webkit-slider-runnable-track]:bg-neutral-700
+
+  [&::-moz-range-track]:w-full
+  [&::-moz-range-track]:h-2
+  [&::-moz-range-track]:bg-gray-100
+  [&::-moz-range-track]:rounded-full" id="adjust" aria-orientation="horizontal">
+</div>
+<!-- Score Section -->
+<section class="bg-gray-800 mt-8 p-6 rounded-xl shadow-lg text-center">
+<h2 class="text-lg font-semibold text-yellow-400 mb-4">📊 Final Risk Score</h2>
+<div class="flex justify-center items-center mb-4 gap-6">
+<div class="text-sm">
+<p class="text-gray-300">Likelihood</p>
+<p class="font-bold text-xl" id="likelihood">3.9</p> <p id="likelihood-label">LOW</p>
+</div>
+<div class="text-sm">
+<p class="text-gray-300">Technical Impact</p>
+<p class="text-yellow-300 font-bold text-xl" id="techimpact">5.0</p> <p id="techimpact-label">LOW</p>
+</div>
+<div class="text-sm">
+<p class="text-gray-300">Business Impact</p>
+<p class="text-green-300 font-bold text-xl" id="busiimpact">1.8</p> <p id="busiimpact-label">LOW</p>
+</div>
+</div>
+<p class="text-2xl font-bold text-black " id="risk">MEDIUM</p>
+<div class="text-gray-400 break-all" id="vector">Vector: </div>
+<button id="copyVectorBtn" class="bg-gray-700 px-2 py-1 rounded hover:bg-gray-600 text-xs">📋 Copy</button>
+</section>
+</div>
+<script>
+    const translations = {
+      en: {
+        "SNOOPBEES OWASP Risk Rating Calculator": "SNOOPBEES OWASP Risk Rating Calculator",
+        "Likelihood": "Likelihood",
+        "Threat Agent Factors": "Threat Agent Factors",
+        "Vulnerability Factors": "Vulnerability Factors",
+        "Impact": "Impact",
+        "Technical Impact": "Technical Impact",
+        "Business Impact": "Business Impact",
+        "Intermediate": "Intermediate",
+        "Final Score": "Final Score",
+        "Adjust score": "Adjust score",
+        "Risk": "Risk",
+        "🧠 Skill Level": "🧠 Skill Level",
+        "🎯 Motive": "🎯 Motive",
+        "🧱 Opportunity": "🧱 Opportunity",
+        "👥 Size": "👥 Size",
+        "🔍 Ease of Discovery": "🔍 Ease of Discovery",
+        "🎯 Ease of Exploit": "🎯 Ease of Exploit",
+        "❓ Awareness": "❓ Awareness",
+        "🛡 Intrusion Detection": "🛡 Intrusion Detection",
+        "✅ Loss of Confidentiality": "✅ Loss of Confidentiality",
+        "✅ Loss of Integrity": "✅ Loss of Integrity",
+        "✅ Loss of Availability": "✅ Loss of Availability",
+        "✅ Loss of Accountability": "✅ Loss of Accountability",
+        "💰 Financial Damage": "💰 Financial Damage",
+        "📉 Reputation Damage": "📉 Reputation Damage",
+        "⚖️ Non-Compliance": "⚖️ Non-Compliance",
+        "🔐 Privacy Violation": "🔐 Privacy Violation",
+        // Add dropdown options as keys for completeness (not used for en->th)
+        //Skill Level
+        "1 - Security penetration skills": "1 - Security penetration skills",
+        "3 - Network and programming skills": "3 - Network and programming skills",
+        "5 - Advanced computer user": "5 - Advanced computer user",
+        "6 - Some technical skills": "6 - Some technical skills",
+        "9 - No technical skills": "9 - No technical skills",
+        //Motive
+        "1 - Low or no reward": "1 - Low or no reward",
+        "4 - Possible reward": "4 - Possible reward",
+        "9 - High reward": "9 - High reward",
+        //Opportunity
+        "0 - Full access or expensive resources required": "0 - Full access or expensive resources required",
+        "4 - Special access or resources required": "4 - Special access or resources required",
+        "7 - Some access or resources required": "7 - Some access or resources required",
+        "9 - No access or resources required": "9 - No access or resources required",
+        //Size
+        "2 - Developers, system administrators": "2 - Developers, system administrators",
+        "4 - Intranet users": "4 - Intranet users",
+        "5 - Partners": "5 - Partners",
+        "6 - Authenticated users": "6 - Authenticated users",
+        "9 - Anonymous Internet users": "9 - Anonymous Internet users",
+        //Ease of Discovery
+        "1 - Practically impossible": "1 - Practically impossible",
+        "3 - Difficult": "3 - Difficult",
+        "7 - Easy": "7 - Easy",
+        "9 - Automated tools available": "9 - Automated tools available",
+        //Ease of Exploit
+        "1 - Theoretical": "1 - Theoretical",
+        "3 - Difficult": "3 - Difficult",
+        "5 - Easy": "5 - Easy",
+        "9 - Automated tools available": "9 - Automated tools available",
+        //Awareness
+        "1 - Unknown": "1 - Unknown",
+        "4 - Hidden": "4 - Hidden",
+        "6 - Obvious": "6 - Obvious",
+        "9 - Public knowledge": "9 - Public knowledge",
+        //Intrusion Detection
+        "1 - Active detection in application": "1 - Active detection in application",
+        "3 - Logged and reviewed": "3 - Logged and reviewed",
+        "8 - Logged without review": "8 - Logged without review",
+        "9 - Not logged": "9 - Not logged",
+        //Loss of Confidentiality
+        "2 - Minimal non-sensitive data disclosed": "2 - Minimal non-sensitive data disclosed",
+        "6 - Minimal critical data disclosed, extensive non-sensitive data disclosed": "6 - Minimal critical data disclosed, extensive non-sensitive data disclosed",
+        "7 - Extensive critical data disclosed": "7 - Extensive critical data disclosed",
+        "9 - All data disclosed": "9 - All data disclosed",
+        //Loss of Integrity
+        "1 - Minimal slightly corrupt data": "1 - Minimal slightly corrupt data",
+        "3 - Minimal seriously corrupt data": "3 - Minimal seriously corrupt data",
+        "5 - Extensive slightly corrupt data": "5 - Extensive slightly corrupt data",
+        "7 - Extensive seriously corrupt data": "7- Extensive seriously corrupt data",
+        "9 - All data totally corrupt": "9 - All data totally corrupt",
+        //Loss of Availability
+        "1 - Minimal secondary services interrupted": "1 - Minimal secondary services interrupted",
+        "5 - Minimal primary services interrupted, extensive secondary services interrupted": "5 - Minimal primary services interrupted, extensive secondary services interrupted",
+        "7 - Extensive primary services interrupted": "7 - Extensive primary services interrupted",
+        "9 - All services completely lost": "9 - All services completely lost",
+        //Loss of Accountability
+        "1 - Fully traceable": "1 - Fully traceable",
+        "7 - Possibly traceable": "7 - Possibly traceable",
+        "9 - Completely anonymous": "9 - Completely anonymous",
+        //Financial Damage
+        "1 - Less than the cost to fix the vulnerability": "1 - Less than the cost to fix the vulnerability",
+        "3 - Minor effect on annual profit": "3 - Minor effect on annual profit",
+        "7 - Significant effect on annual profit": "7 - Significant effect on annual profit",
+        "9 - Bankruptcy": "9 - Bankruptcy",
+        //Reputation Damage
+        "1 - Minimal damage": "1 - Minimal damage",
+        "4 - Loss of major accounts": "4 - Loss of major accounts",
+        "5 - Loss of goodwill": "5 - Loss of goodwill",
+        "9 - Brand damage": "9 - Brand damage",
+        //"Non-Compliance
+        "2 - Minor violation": "2 - Minor violation",
+        "5 - Clear violation": "5 - Clear violation",
+        "7 - High profile violation": "7 - High profile violation",
+        //Privacy Violation
+        "3 - One individual": "3 - One individual",
+        "5 - Hundreds of people": "5 - Hundreds of people",
+        "7 - Thousands of people": "7 - Thousands of people",
+        "9 - Millions of people": "9 - Millions of people"
+      },
+      th: {
+        "SNOOPBEES OWASP Risk Rating Calculator": "เครื่องมือคำนวณความเสี่ยง OWASP โดย SNOOPBEES",
+        "Likelihood": "ความเป็นไปได้",
+        "Threat Agent Factors": "ปัจจัยของผู้โจมตี",
+        "Vulnerability Factors": "ปัจจัยของช่องโหว่",
+        "Impact": "ผลกระทบ",
+        "Technical Impact": "ผลกระทบทางเทคนิค",
+        "Business Impact": "ผลกระทบทางธุรกิจ",
+        "Intermediate": "คะแนนระดับกลาง",
+        "Final Score": "คะแนนสุดท้าย",
+        "Adjust score": "ปรับคะแนน",
+        "Risk": "ความเสี่ยง",
+        "🧠 Skill Level": "🧠 ทักษะของผู้โจมตี",
+        "🎯 Motive": "🎯 แรงจูงใจ",
+        "🧱 Opportunity": "🧱 โอกาส",
+        "👥 Size": "👥 ขนาดกลุ่มผู้โจมตี",
+        "🔍 Ease of Discovery": "🔍 ความง่ายในการค้นพบช่องโหว่",
+        "🎯 Ease of Exploit": "🎯 ความง่ายในการโจมตีช่องโหว่",
+        "❓ Awareness": "❓ การรับรู้ช่องโหว่",
+        "🛡 Intrusion Detection": "🛡 การตรวจจับการบุกรุก",
+        "✅ Loss of Confidentiality": "✅ การสูญเสียความลับ",
+        "✅ Loss of Integrity": "✅ การสูญเสียความถูกต้อง",
+        "✅ Loss of Availability": "✅ การสูญเสียความพร้อมใช้งาน",
+        "✅ Loss of Accountability": "✅ การสูญเสียการติดตาม",
+        "💰 Financial Damage": "💰 ความเสียหายทางการเงิน",
+        "📉 Reputation Damage": "📉 ความเสียหายต่อชื่อเสียง",
+        "⚖️ Non-Compliance": "⚖️ การไม่ปฏิบัติตามข้อกำหนด",
+        "🔐 Privacy Violation": "🔐 การละเมิดความเป็นส่วนตัว",
+        // Dropdown option translations:
+        //Skill Level
+        "1 - Security penetration skills": "1 - มีทักษะด้านการทดสอบความปลอดภัย",
+        "3 - Network and programming skills": "3 - มีทักษะด้าน Network และ programming",
+        "5 - Advanced computer user": "5 - มีทักษะในการใช้งาน Computer สูง",
+        "6 - Some technical skills": "6 - มีทักษะบางส่วน",
+        "9 - No technical skills": "9 - ไม่จำเป็นต้องมีทักษะ",
+        //Motive
+        "1 - Low or no reward": "1 - ผลตอบแทนน้อยหรือไม่มีเลย",
+        "4 - Possible reward": "4 - ค่อนข้างได้รับผลตอบแทน",
+        "9 - High reward": "9 - ผลตอบแทนสูง",
+        //Opportunity
+        "0 - Full access or expensive resources required": "0 - ต้องการสิทธิ์เข้าถึงเต็มรูปแบบหรือทรัพยากรที่มีค่าใช้จ่ายสูง",
+        "4 - Special access or resources required": "4 - ต้องการสิทธิ์เข้าถึงหรือทรัพยากร",
+        "7 - Some access or resources required": "7 - ต้องการสิทธิ์เข้าถึงหรือทรัพยากรเล็กน้อย",
+        "9 - No access or resources required": "9 - ไม่ต้องการสิทธิ์เข้าถึงหรือทรัพยากรใดๆ",
+        //Size
+        "2 - Developers, system administrators": "2 - นักพัฒนา, ผู้ดูแลระบบ",
+        "4 - Intranet users": "4 - ผู้ใช้งานภายใน",
+        "5 - Partners": "5 - Partners",
+        "6 - Authenticated users": "6 - ผู้ใช้งานที่ต้องลงทะเบียน",
+        "9 - Anonymous Internet users": "9 - ผู้ใช้งานอินเตอร์เน็ตทั่วไป",
+        //Ease of Discovery
+        "1 - Practically impossible": "1 - แทบจะเป็นไปไม่ได้",
+        "3 - Difficult": "3 - ยาก",
+        "7 - Easy": "7 - ง่าย",
+        "9 - Automated tools available": "9 - สามารถใช้เครื่องมืออัตโนมัติได้",
+        //Ease of Exploit
+        "1 - Theoretical": "1 - เชิงทฤษฎี",
+        "3 - Difficult": "3 - ยาก",
+        "5 - Easy": "5 - ง่าย",
+        "9 - Automated tools available": "9 - สามารถใช้เครื่องมืออัตโนมัติได้",
+        //Awareness
+        "1 - Unknown": "1 - ไม่เป็นที่รู้จัก",
+        "4 - Hidden": "4 - ปกปิด",
+        "6 - Obvious": "6 - ชัดเจน",
+        "9 - Public knowledge": "9 - รู้โดยทั่วไป",
+        //Intrusion Detection
+        "1 - Active detection in application": "1 - ระบบสามารถตรวจจับได้",
+        "3 - Logged and reviewed": "3 - บันทึกและตรวจสอบได้",
+        "8 - Logged without review": "8 - บันทึกแต่ไม่ตรวจสอบ",
+        "9 - Not logged": "9 - ไม่มีการบันทึก",
+        //Loss of Confidentiality
+        "2 - Minimal non-sensitive data disclosed": "2 - เปิดเผยข้อมูลที่ไม่ละเอียดอ่อนเพียงเล็กน้อย",
+        "6 - Minimal critical data disclosed, extensive non-sensitive data disclosed": "6 - เปิดเผยข้อมูลที่ละเอียดอ่อนเพียงเล็กน้อย,เปิดเผยข้อมูลที่ไม่ละเอียดอ่อนจำนวนมาก",
+        "7 - Extensive critical data disclosed": "7 - เปิดเผยข้อมูลที่ละเอียดอ่อนจำนวนมาก",
+        "9 - All data disclosed": "9 - ข้อมูลทั้งหมดถูกเปิดเผย",
+        //Loss of Integrity
+        "1 - Minimal slightly corrupt data": "1 - ข้อมูลเสียหายเล็กน้อยในปริมาณน้อย",
+        "3 - Minimal seriously corrupt data": "3 - ข้อมูลเสียหายร้ายแรงในปริมาณน้อย",
+        "5 - Extensive slightly corrupt data": "5 - ข้อมูลเสียหายเล็กน้อยในปริมาณมาก",
+        "7 - Extensive seriously corrupt data": "7- ข้อมูลเสียหายร้ายแรงในปริมาณมาก",
+        "9 - All data totally corrupt": "9 - ข้อมูลทั้งหมดเสียหาย",
+        //Loss of Availability
+        "1 - Minimal secondary services interrupted": "1 - Service รองหยุดทำงานเล็กน้อย",
+        "5 - Minimal primary services interrupted, extensive secondary services interrupted": "5 - Service หลักหยุดทำงานเล็กน้อย, Service รองหยุดทำงาน",
+        "7 - Extensive primary services interrupted": "7 - Service หลักหยุดทำงาน",
+        "9 - All services completely lost": "9 - Service ทั้งหมดหลักหยุดการทำงาน",
+        //Loss of Accountability
+        "1 - Fully traceable": "1 - สามารถตรวจสอบย้อนกลับได้เต็มที่",
+        "7 - Possibly traceable": "7 - สามารถตรวจสอบย้อนกลับได้",
+        "9 - Completely anonymous": "9 - ไม่สามารถตรวจสอบย้อนกลับได้",
+        //Financial Damage
+        "1 - Less than the cost to fix the vulnerability": "1 - น้อยกว่าค่าใช้จ่ายในการแก้ไขช่องโหว่",
+        "3 - Minor effect on annual profit": "3 - มีผลกระทบเล็กน้อยต่อผลกำไรประจำปี",
+        "7 - Significant effect on annual profit": "7 - มีผลกระทบสำคัญต่อผลกำไรประจำปี",
+        "9 - Bankruptcy": "9 - ล้มละลาย",
+        //Reputation Damage
+        "1 - Minimal damage": "1 - ความเสียหายเล็กน้อย",
+        "4 - Loss of major accounts": "4 - สูญเสียลูกค้ารายใหญ่ของบริษัท",
+        "5 - Loss of goodwill": "5 - สูญเสียความนิยม",
+        "9 - Brand damage": "9 - ความเสียหายต่อแบรนด์",
+        //"Non-Compliance
+        "2 - Minor violation": "2 - การละเมิดเล็กน้อย",
+        "5 - Clear violation": "5 - การละเมิดที่ชัดเจน",
+        "7 - High profile violation": "7 - การละเมิดที่รุนแรง",
+        //Privacy Violation
+        "3 - One individual": "3 - บุคคลหนึ่งคน",
+        "5 - Hundreds of people": "5 - ร้อยคน",
+        "7 - Thousands of people": "7 - พันคน",
+        "9 - Millions of people": "9 - ล้านคน"
+      }
+    };
+
+    let currentLang = 'en';
+
+    function setLang(lang) {
+      currentLang = lang;
+      Object.keys(translations[lang]).forEach(key => {
+        document.querySelectorAll("h2, h3, h4, option, label").forEach(el => {
+          const current = el.textContent.trim();
+          if (current === translations[currentLang === 'en' ? 'th' : 'en'][key] || current === key) {
+            el.textContent = translations[lang][key];
+          }
+        });
+      });
+      /* Translate <option> elements for dropdowns as well
+      document.querySelectorAll("option").forEach(el => {
+        const current = el.textContent.trim();
+        if (translations[currentLang === 'en' ? 'th' : 'en'][current]) {
+          el.textContent = translations[lang][current];
+        }
+      });*/
+    }
+    </script>
+
+
+<script type="text/javascript">
+  function adjustScore(elm){
+    elm.title = elm.value;
+    globalUpdate();
+    window.location.hash = getStatus();
+  }
+  document.getElementById("adjust").onchange = adjustScore;
+  var colors = ['#8e8','#ee6','#f66']
+  var scoreColors = ['#7dd','#8e8','#ee5','#f66','#c00']
+  function value2text(value){
+    return value < 3 ? "LOW" : (value < 6 ? "MEDIUM" : "HIGH");
+  }
+  function val2score(value){
+    return value < 3 ? 0 : (value < 6 ? 1 : 2);
+  }
+  function globalUpdate(){
+    var likelihood = parseFloat(document.getElementById('likelihood').textContent);
+    var techimpact = parseFloat(document.getElementById('techimpact').textContent);
+    var busiimpact = parseFloat(document.getElementById('busiimpact').textContent);
+    var adjust = parseFloat(document.getElementById('adjust').value) / 100.0;
+    var impact = ( busiimpact * adjust ) + ( techimpact * (1-adjust) )
+    function score2text(score){
+      return ['NOTE','LOW','MEDIUM','HIGH','CRITICAL'][score];
+    }
+    var score = val2score(likelihood) + val2score(impact);
+    var elm = document.getElementById('risk');
+    elm.textContent = score2text(score);
+    elm.style.backgroundColor = scoreColors[score];
+    // Update Adjust Weight display
+    document.getElementById('adjustScore').textContent = `${Math.round(adjust * 100)}%`;
+  }
+ /* function getStatus(){
+    var selects = document.querySelectorAll("select");
+    var letters = "KMOZDXWLCIATFRSP";
+    var vector = Array.prototype.map.call(selects,function(x,i){return letters[i]+x.value});
+    vector = Array.prototype.reduce.call(vector,function(v,x,i){return v + (i%4==0 ? "/" : ":") + x});
+    // vector = vector,replace(/\//g)
+    var percent = parseInt(100*parseFloat(document.getElementById('adjust').value));
+    return "OWASP/"+vector+"/"+percent;
+  } 
+*/
+
+    function getStatus() {
+    const selects = document.querySelectorAll("select");
+    const fieldMap = [
+    "SL", "M", "O", "S",
+    "ED", "EE", "A", "ID",
+    "LC", "LI", "LAV", "LAC",
+    "FD", "RD", "NC", "PV"
+  ];
+
+  const vector = Array.prototype.map.call(selects, function(x, i) {
+    return fieldMap[i] + ":" + x.value;
+  });
+
+  const output = vector.join("/");
+  const percent = parseInt(document.getElementById('adjust').value);
+  return "OWASP/"+output + "/" + percent;
+}
+
+  function clamp(num,min,max){
+    return Math.min(Math.max(num, min), max);
+  }
+  function setStatus(status){
+    var status = (status.match(/\d+/g) || []).map(function (x){return parseInt(x)});
+    status = status.map(function(x,i){return clamp(x, 0, i<16 ? 9 : 100)})
+    if(status.length != 17)
+      status = Array(16).fill(0).concat(0);
+    document.getElementById('adjust').value = status.pop() || 0;
+    var selects = document.querySelectorAll("select");
+    Array.prototype.map.call( selects, function(elm,index){
+      elm.value = status[index];
+      elm.onchange();
+    });
+  }
+  var sections = ["likelihood",'techimpact','busiimpact'];
+  sections.map(
+    function(name){
+      var updateFunc = function(){
+        // Set background color of the select itself, not its parent
+        this.style.backgroundColor = colors[ val2score(this.value) ];
+        var selects = document.querySelectorAll("#tr_" + name + " select");
+        var value = Math.round(Array.prototype.reduce.call( selects, function(sum,elm){
+          return sum + parseInt(elm.value);
+        },0) * 10 / selects.length) / 10.0;
+        var elm = document.getElementById(name);
+        elm.textContent = value.toFixed(1);
+        // Conditional coloring for likelihood, techimpact, and busiimpact
+        if (["likelihood", "techimpact", "busiimpact"].includes(name)) {
+          elm.classList.remove("text-green-300", "text-yellow-300", "text-red-400");
+          if (value < 3.0) {
+            elm.classList.add("text-green-300");
+          } else if (value < 6.0) {
+            elm.classList.add("text-yellow-300");
+          } else {
+            elm.classList.add("text-red-400");
+          }
+        }
+        var labelElm = document.getElementById(name + "-label");
+        if (labelElm) {
+          labelElm.textContent = value2text(value);
+        }
+        globalUpdate();
+        var status = getStatus();
+        document.getElementById('vector').textContent = status;
+        window.location.hash = status;
+      };
+      var selects = document.querySelectorAll("#tr_"+name+" select");
+      Array.prototype.map.call( selects, function(elm){
+        elm.onchange = updateFunc;
+      });
+    }
+  );
+  setStatus(window.location.hash);
+  window.onhashchange = function(){setStatus(window.location.hash)};
+  window.onload = function(){
+    var selects = document.querySelectorAll("select");
+    Array.prototype.map.call(selects, function(x){
+      var td = x.parentNode;
+      var tr = td.parentNode;
+      var i = Array.prototype.indexOf.call(tr.children,td);
+      var th = tr.previousElementSibling.children[i];
+      th.title = x.title;
+    });
+  }
+  document.getElementById('vector').onpaste = function(ev){
+  	var vector = ev.clipboardData.getData('text')
+  	setStatus(vector);
+  	return ev.preventDefault();
+  }
+  // Copy vector functionality
+  document.getElementById('copyVectorBtn').addEventListener('click', function () {
+    const vectorText = document.getElementById('vector').textContent;
+    navigator.clipboard.writeText(vectorText).then(() => {
+      alert('Vector copied to clipboard!');
+    }).catch(err => {
+      alert('Failed to copy vector: ' + err);
+    });
+  });
+</script>
+
+</body>
+</html>
